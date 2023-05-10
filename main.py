@@ -163,7 +163,7 @@ class IPATool(object):
         }
 
         if args.get_verid:
-            logger.info("Retriving verId using iTunes webpage...")
+            logger.info("Retrieving verId using iTunes webpage...")
             verId = iTunes.getAppVerId(self.appId, args.country)
             logger.info("Got current verId using iTunes webpage: %s" % verId)
             ret["appVerId"] = verId
@@ -213,16 +213,16 @@ class IPATool(object):
             logger.fatal("appId not supplied!")
             return
 
-        logger.info('Retriving history version for appId %s' % self.appId)
+        logger.info('Retrieving history version for appId %s' % self.appId)
 
         try:
             Store = self._get_StoreClient(args)
 
-            logger.info('Retriving download info for appId %s' % (self.appId))
+            logger.info('Retrieving download info for appId %s' % (self.appId))
             downResp = Store.download(self.appId)
             
             if not downResp.songList:
-                logger.fatal("failed to get app download info!")
+                logger.fatal("Failed to get app download info!")
                 raise StoreException('download', downResp, 'no songList')
             downInfo = downResp.songList[0]
             logger.info('Got available version ids %s', downInfo.metadata.softwareVersionExternalIdentifiers)
@@ -247,7 +247,7 @@ class IPATool(object):
             Store = self._get_StoreClient(args)
 
             if args.purchase:
-                logger.info('Try to purchasing appId %s' % (self.appId))
+                logger.info('Trying to purchase appId %s' % (self.appId))
                 try:
                     Store.purchase(self.appId)
                 except StoreException as e:
@@ -256,12 +256,12 @@ class IPATool(object):
                     else:
                         raise
             
-            logger.info('Retriving download info for appId %s%s' % (self.appId, " with versionId %s" % self.appVerId if self.appVerId else ""))
+            logger.info('Retrieving download info for appId %s%s' % (self.appId, " with versionId %s" % self.appVerId if self.appVerId else ""))
 
             downResp = Store.download(self.appId, self.appVerId)
             
             if not downResp.songList:
-                logger.fatal("failed to get app download info!")
+                logger.fatal("Failed to get app download info!")
                 raise StoreException('download', downResp, 'no songList')
             downInfo = downResp.songList[0]
 
@@ -302,7 +302,7 @@ class IPATool(object):
                 for i, sinfPath in enumerate(scManifest['SinfPaths']):
                     ipaFile.writestr(appContentDir + '/' + sinfPath, sinfs[i])
 
-            logger.info("Downloaded ipa to %s" % filename)
+            logger.info("PND_SUCCESS: Downloaded ipa to %s" % filename)
 
             self._outputJson({
                 "appName": appName,
@@ -310,7 +310,6 @@ class IPATool(object):
                 "appVer": appVer,
                 "appId": appId,
                 "appVerId": appVerId,
-
                 "downloadedIPA": filepath,
                 "downloadedVerId": appVerId,
             })
